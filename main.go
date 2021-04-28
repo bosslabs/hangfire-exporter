@@ -19,7 +19,7 @@ func main() {
 	fs := flag.NewFlagSet("hangfire-exporter", flag.ExitOnError)
 	var (
 		listenAddress       = fs.String("listenaddress", ":8888", "listen address")
-		dbType              = fs.String("dbtype", "sqlserver", "the database type (mongo/sqlserver)")
+		dbType              = fs.String("dbtype", "sqlserver", "the database type (mongo/sqlserver/postgres)")
 		metricsPath         = fs.String("metricspath", "/metrics", "metrics path")
 		mongoConnection     = fs.String("mongoconnection", "mongodb://localhost:27017", "mongo connection")
 		mongoDatabase       = fs.String("mongodatabase", "default", "hangfire database")
@@ -35,8 +35,8 @@ func main() {
 			logger.Fatal("Could not establish a connection with mongo", err)
 		}
 		statistics = s
-	} else if *dbType == "sqlserver" {
-		s, err := sqlserver.NewSqlServerStatistics(*sqlserverConnection, logger)
+	} else if *dbType == "sqlserver" || *dbType == "postgres" {
+		s, err := sqlserver.NewSqlServerStatistics(*dbType, *sqlserverConnection, logger)
 		if err != nil {
 			logger.Fatal("Could not establish a connection with sqlserver", err)
 		}

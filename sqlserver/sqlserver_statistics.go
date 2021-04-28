@@ -11,8 +11,8 @@ type SqlServerStatistics struct {
 	logger *log.Logger
 }
 
-func NewSqlServerStatistics(connection string, logger *log.Logger) (*SqlServerStatistics, error) {
-	db, err := sql.Open("sqlserver", connection)
+func NewSqlServerStatistics(database_type string, connection string, logger *log.Logger) (*SqlServerStatistics, error) {
+	db, err := sql.Open(database_type, connection)
 	if err != nil {
 		return nil, err
 	}
